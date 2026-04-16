@@ -15,6 +15,7 @@ export interface Barber {
   }
   blockedSlots: Array<{ date: string; time: string }>
   blockedDays: string[]
+  recurringBlockedTimes: string[]
 }
 
 export interface DaySchedule {

@@ -24,6 +24,7 @@ export interface IBarber extends Document {
   }
   blockedSlots: Array<{ date: string; time: string }>
   blockedDays: string[]
+  recurringBlockedTimes: string[]
 }
 
 const daySchema = {
@@ -45,6 +46,7 @@ const barberSchema = new Schema<IBarber>(
       time: { type: String, required: true }
     }],
     blockedDays: [{ type: String }],
+    recurringBlockedTimes: [{ type: String }],
     schedule: {
       monday: { type: daySchema, default: () => ({ enabled: true, start: '09:00', end: '19:00' }) },
       tuesday: { type: daySchema, default: () => ({ enabled: true, start: '09:00', end: '19:00' }) },

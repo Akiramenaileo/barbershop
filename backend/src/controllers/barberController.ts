@@ -27,6 +27,21 @@ export const deleteBarber = async (req: Request, res: Response): Promise<void> =
   res.json({ message: 'Barbero eliminado' })
 }
 
+export const toggleRecurringSlot = async (req: Request, res: Response): Promise<void> => {
+  const { time } = req.body
+  const barber = await Barber.findById(req.params.id)
+  if (!barber) { res.status(404).json({ message: 'No encontrado' }); return }
+
+  const idx = barber.recurringBlockedTimes.indexOf(time)
+  if (idx >= 0) {
+    barber.recurringBlockedTimes.splice(idx, 1)
+  } else {
+    barber.recurringBlockedTimes.push(time)
+  }
+  await barber.save()
+  res.json(barber)
+}
+
 export const toggleBlockedDay = async (req: Request, res: Response): Promise<void> => {
   const { date } = req.body
   const barber = await Barber.findById(req.params.id)

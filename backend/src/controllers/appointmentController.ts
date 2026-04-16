@@ -69,10 +69,11 @@ export const getAvailableSlots = async (req: Request, res: Response): Promise<vo
   const blockedSet = new Set(
     (barber.blockedSlots || []).filter(s => s.date === date).map(s => s.time)
   )
+  const recurringSet = new Set(barber.recurringBlockedTimes || [])
 
   const slots = allSlots.map(slot => ({
     time: slot,
-    available: !bookedSet.has(slot) && !blockedSet.has(slot)
+    available: !bookedSet.has(slot) && !blockedSet.has(slot) && !recurringSet.has(slot)
   }))
 
   res.json({ slots })

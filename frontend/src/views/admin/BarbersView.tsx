@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { fetchAllBarbers, createBarber, updateBarber, deleteBarber, toggleBlockedSlot, toggleBlockedDay } from '../../api/barbers'
+import { fetchAllBarbers, createBarber, updateBarber, deleteBarber, toggleBlockedSlot, toggleBlockedDay, toggleRecurringSlot } from '../../api/barbers'
 import { Barber } from '../../types'
 import Spinner from '../../components/ui/Spinner'
 
@@ -84,6 +84,7 @@ export default function BarbersView() {
   const [form, setForm] = useState<BarberForm>(emptyForm())
   const [blockingBarber, setBlockingBarber] = useState<Barber | null>(null)
   const [blockDate, setBlockDate] = useState('')
+  const [blockMode, setBlockMode] = useState<'date' | 'all'>('date')
   const [vacBarber, setVacBarber] = useState<Barber | null>(null)
   const [vacYear, setVacYear] = useState(new Date().getFullYear())
   const [vacMonth, setVacMonth] = useState(new Date().getMonth())
@@ -105,10 +106,13 @@ export default function BarbersView() {
   const { mutate: toggleSlot } = useMutation({
     mutationFn: ({ id, date, time }: { id: string; date: string; time: string }) =>
       toggleBlockedSlot(token(), id, date, time),
-    onSuccess: (updated) => {
-      setBlockingBarber(updated)
-      qc.invalidateQueries({ queryKey: ['admin-barbers'] })
-    }
+    onSuccess: (updated) => { setBlockingBarber(updated); qc.invalidateQueries({ queryKey: ['admin-barbers'] }) }
+  })
+
+  const { mutate: toggleRecurring } = useMutation({
+    mutationFn: ({ id, time }: { id: string; time: string }) =>
+      toggleRecurringSlot(token(), id, time),
+    onSuccess: (updated) => { setBlockingBarber(updated); qc.invalidateQueries({ queryKey: ['admin-barbers'] }) }
   })
 
   const { mutate: remove } = useMutation({
@@ -281,53 +285,105 @@ export default function BarbersView() {
               <h2 style={{ fontWeight: 700, fontSize: '1.1rem' }}>Bloquear turnos — {blockingBarber.name}</h2>
               <button onClick={() => setBlockingBarber(null)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '1.2rem' }}>✕</button>
             </div>
-            <div style={{ marginBottom: '1.25rem' }}>
-              <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: '0.35rem' }}>Fecha</label>
-              <input type="date" value={blockDate} onChange={e => setBlockDate(e.target.value)} style={{ width: 180 }} />
+
+            {/* Mode toggle */}
+            <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.25rem' }}>
+              {(['date', 'all'] as const).map(mode => (
+                <button
+                  key={mode}
+                  onClick={() => setBlockMode(mode)}
+                  style={{
+                    flex: 1, padding: '0.5rem', borderRadius: 6, cursor: 'pointer',
+                    fontSize: '0.8rem', fontWeight: 600, transition: 'all 0.15s',
+                    border: `1px solid ${blockMode === mode ? 'var(--gold)' : 'var(--border)'}`,
+                    background: blockMode === mode ? 'rgba(155,122,66,0.15)' : 'transparent',
+                    color: blockMode === mode ? 'var(--gold)' : 'var(--text-muted)'
+                  }}
+                >
+                  {mode === 'date' ? '📅 Solo este día' : '🔁 Todos los días'}
+                </button>
+              ))}
             </div>
-            {blockDate && (() => {
-              const slots = slotsForDay(blockingBarber, blockDate)
-              const blockedSet = new Set(
-                (blockingBarber.blockedSlots || []).filter(s => s.date === blockDate).map(s => s.time)
-              )
-              if (!slots.length) return (
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                  {(() => {
+
+            {/* Date picker — only needed for "date" mode */}
+            {blockMode === 'date' && (
+              <div style={{ marginBottom: '1.25rem' }}>
+                <label style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: '0.35rem' }}>Fecha</label>
+                <input type="date" value={blockDate} onChange={e => setBlockDate(e.target.value)} style={{ width: 180 }} />
+              </div>
+            )}
+
+            {/* Slots */}
+            {(() => {
+              const refDate = blockMode === 'all' ? (() => {
+                // Use today to derive the schedule, but any day could work — we show all slots from schedule
+                const today = new Date().toISOString().slice(0, 10)
+                return today
+              })() : blockDate
+
+              if (!refDate && blockMode === 'date') return null
+
+              const slots = blockMode === 'all'
+                ? (() => {
+                    // Generate union of all possible slots across all enabled days
+                    const allTimes = new Set<string>()
                     const dayKeys = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday']
-                    const key = dayKeys[new Date(blockDate + 'T12:00:00').getDay()]
-                    return `${DAY_NAMES_ES[key]} no tiene horario habilitado.`
-                  })()}
-                </p>
+                    dayKeys.forEach(k => {
+                      const day = blockingBarber.schedule[k as keyof typeof blockingBarber.schedule]
+                      if (day?.enabled) {
+                        const toMin = (t: string) => { const [h,m] = t.split(':').map(Number); return h*60+m }
+                        let cur = toMin(day.start); const end = toMin(day.end)
+                        while (cur + 30 <= end) {
+                          allTimes.add(`${String(Math.floor(cur/60)).padStart(2,'0')}:${String(cur%60).padStart(2,'0')}`)
+                          cur += 30
+                        }
+                      }
+                    })
+                    return Array.from(allTimes).sort()
+                  })()
+                : slotsForDay(blockingBarber, refDate)
+
+              if (!slots.length) return (
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>No hay horarios habilitados.</p>
               )
+
+              const dateBlockedSet = new Set((blockingBarber.blockedSlots || []).filter(s => s.date === refDate).map(s => s.time))
+              const recurringSet = new Set(blockingBarber.recurringBlockedTimes || [])
+
               return (
                 <div>
                   <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.75rem' }}>
-                    Clic para bloquear/desbloquear un turno
+                    {blockMode === 'date' ? 'Clic para bloquear/desbloquear en esta fecha' : 'Clic para bloquear/desbloquear en todos los días'}
                   </p>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                     {slots.map(time => {
-                      const blocked = blockedSet.has(time)
+                      const blocked = blockMode === 'all' ? recurringSet.has(time) : dateBlockedSet.has(time)
+                      const isRecurring = recurringSet.has(time)
                       return (
                         <button
                           key={time}
-                          onClick={() => toggleSlot({ id: blockingBarber._id, date: blockDate, time })}
+                          onClick={() => blockMode === 'all'
+                            ? toggleRecurring({ id: blockingBarber._id, time })
+                            : toggleSlot({ id: blockingBarber._id, date: refDate, time })
+                          }
                           style={{
                             padding: '0.4rem 0.75rem', borderRadius: 6, fontFamily: 'JetBrains Mono, monospace',
                             fontSize: '0.82rem', cursor: 'pointer', transition: 'all 0.15s',
-                            border: `1px solid ${blocked ? '#f8717166' : 'rgba(232,217,196,0.18)'}`,
-                            background: blocked ? '#f8717118' : 'transparent',
-                            color: blocked ? '#f87171' : 'var(--text)',
+                            border: `1px solid ${blocked ? '#f8717166' : isRecurring ? '#f8717133' : 'rgba(232,217,196,0.18)'}`,
+                            background: blocked ? '#f8717118' : isRecurring ? '#f8717108' : 'transparent',
+                            color: blocked ? '#f87171' : isRecurring ? '#f8717180' : 'var(--text)',
                             textDecoration: blocked ? 'line-through' : 'none'
                           }}
+                          title={isRecurring && blockMode === 'date' ? 'Bloqueado todos los días' : undefined}
                         >
-                          {time}
+                          {time}{isRecurring && blockMode === 'date' ? ' ∞' : ''}
                         </button>
                       )
                     })}
                   </div>
-                  {blockedSet.size > 0 && (
-                    <p style={{ fontSize: '0.75rem', color: '#f87171', marginTop: '1rem' }}>
-                      {blockedSet.size} turno{blockedSet.size > 1 ? 's' : ''} bloqueado{blockedSet.size > 1 ? 's' : ''}
+                  {blockMode === 'date' && recurringSet.size > 0 && (
+                    <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '0.75rem' }}>
+                      Los turnos con ∞ están bloqueados todos los días
                     </p>
                   )}
                 </div>

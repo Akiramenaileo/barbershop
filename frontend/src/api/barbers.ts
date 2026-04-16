@@ -35,6 +35,13 @@ export const deleteBarber = async (token: string, id: string): Promise<void> => 
   })
 }
 
+export const toggleRecurringSlot = async (token: string, id: string, time: string): Promise<Barber> => {
+  const { data } = await axios.patch(`${API}/barbers/${id}/recurring-slots`, { time }, {
+    headers: { Authorization: `Bearer ${token}` }
+  })
+  return data
+}
+
 export const toggleBlockedDay = async (token: string, id: string, date: string): Promise<Barber> => {
   const { data } = await axios.patch(`${API}/barbers/${id}/blocked-days`, { date }, {
     headers: { Authorization: `Bearer ${token}` }

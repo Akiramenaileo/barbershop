@@ -19,7 +19,7 @@ export default function StepService({ selected, onSelect }: Props) {
       <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginBottom: '2rem' }}>
         Seleccioná el servicio para ver barberos y horarios disponibles.
       </p>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '1px', background: 'var(--border)' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '1rem' }}>
         {services?.map(s => {
           const isSelected = selected?._id === s._id
           return (
@@ -28,9 +28,7 @@ export default function StepService({ selected, onSelect }: Props) {
               onClick={() => onSelect(s)}
               style={{
                 background: isSelected ? 'rgba(155,122,66,0.12)' : 'var(--bg-card)',
-                border: 'none',
-                outline: isSelected ? '2px solid var(--gold)' : 'none',
-                outlineOffset: '-2px',
+                border: `1px solid ${isSelected ? 'var(--gold)' : 'var(--border)'}`,
                 padding: '1.5rem',
                 cursor: 'pointer', textAlign: 'left',
                 transition: 'background 0.15s', color: 'var(--text)',

@@ -112,10 +112,7 @@ export default function LandingView() {
 
       {/* ── STATS ── */}
       <div style={{ borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
-        <div style={{
-          maxWidth: 1200, margin: '0 auto',
-          display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)'
-        }}>
+        <div className="landing-stats" style={{ maxWidth: 1200, margin: '0 auto' }}>
           {[
             { n: '+500', label: 'Clientes satisfechos' },
             { n: '3', label: 'Barberos expertos' },
@@ -193,13 +190,9 @@ export default function LandingView() {
       </section>
 
       {/* ── SERVICES ── */}
-      <section id="servicios" style={{ padding: '7rem 2rem' }}>
+      <section id="servicios" className="landing-section">
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <div style={{
-            display: 'flex', justifyContent: 'space-between',
-            alignItems: 'flex-end', marginBottom: '3rem',
-            borderBottom: '1px solid var(--border)', paddingBottom: '1.5rem'
-          }}>
+          <div className="landing-section-header">
             <div>
               <span className="section-label">Servicios</span>
               <h2 style={{
@@ -232,11 +225,7 @@ export default function LandingView() {
           ) : (
             <div>
               {services.map((s, i) => (
-                <div key={s._id} style={{
-                  display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                  padding: '1.75rem 0', borderBottom: '1px solid var(--border)',
-                  gap: '2rem', transition: 'all 0.2s', cursor: 'default'
-                }}
+                <div key={s._id} className="landing-service-row" style={{ transition: 'all 0.2s', cursor: 'default' }}
                   onMouseEnter={e => { e.currentTarget.style.paddingLeft = '1rem'; e.currentTarget.style.color = 'var(--gold)' }}
                   onMouseLeave={e => { e.currentTarget.style.paddingLeft = '0'; e.currentTarget.style.color = 'var(--text)' }}
                 >
@@ -282,7 +271,7 @@ export default function LandingView() {
       </section>
 
       {/* ── TEAM ── */}
-      <section id="equipo" style={{ padding: '7rem 2rem', background: 'var(--bg-card)' }}>
+      <section id="equipo" className="landing-section" style={{ background: 'var(--bg-card)' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
           <div style={{ borderBottom: '1px solid var(--border)', paddingBottom: '1.5rem', marginBottom: '3.5rem' }}>
             <span className="section-label">El equipo</span>
@@ -353,7 +342,7 @@ export default function LandingView() {
       </section>
 
       {/* ── CTA ── */}
-      <section style={{ position: 'relative', overflow: 'hidden', minHeight: 480, display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '7rem 2rem' }}>
+      <section className="landing-section" style={{ position: 'relative', overflow: 'hidden', minHeight: 480, display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
         {/* Background photo */}
         <div style={{
           position: 'absolute', inset: 0,

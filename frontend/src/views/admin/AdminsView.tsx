@@ -30,7 +30,7 @@ export default function AdminsView() {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+      <div className="admin-page-header">
         <h1 style={{ fontWeight: 700, fontSize: '1.5rem' }}>Administradores</h1>
         <button className="btn-primary" onClick={() => { setShowForm(true); setError('') }} style={{ fontSize: '0.875rem' }}>
           + Nuevo admin

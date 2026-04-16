@@ -41,7 +41,7 @@ export default function ServicesView() {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+      <div className="admin-page-header">
         <h1 style={{ fontWeight: 700, fontSize: '1.5rem' }}>Servicios</h1>
         <button className="btn-primary" onClick={() => { reset(); setShowForm(true) }} style={{ fontSize: '0.875rem' }}>
           + Nuevo servicio

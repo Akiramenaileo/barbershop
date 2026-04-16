@@ -41,7 +41,7 @@ export default function PublicLayout() {
               padding: '0.45rem 1.25rem', borderRadius: 4,
               transition: 'all 0.15s'
             }}
-              onMouseEnter={e => { e.currentTarget.style.background = 'var(--accent)'; e.currentTarget.style.borderColor = 'var(--accent)' }}
+              onMouseEnter={e => { e.currentTarget.style.background = 'var(--clr-accent)'; e.currentTarget.style.borderColor = 'var(--clr-accent)' }}
               onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'var(--border-strong)' }}>
               Reservar
             </Link>

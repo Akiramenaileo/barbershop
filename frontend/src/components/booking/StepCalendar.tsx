@@ -94,9 +94,9 @@ export default function StepCalendar({ barber, service, selectedDate, selectedSl
                     width: '100%',
                     height: 36,
                     borderRadius: 8,
-                    border: isSelected ? '2px solid var(--accent)' : '1px solid transparent',
+                    border: isSelected ? '2px solid var(--clr-accent)' : '1px solid transparent',
                     background: isSelected ? 'rgba(212,160,23,0.15)' : 'transparent',
-                    color: past ? 'var(--border)' : isSelected ? 'var(--accent)' : 'var(--text)',
+                    color: past ? 'var(--border)' : isSelected ? 'var(--clr-accent)' : 'var(--text)',
                     cursor: past ? 'not-allowed' : 'pointer',
                     fontSize: '0.8rem',
                     fontWeight: isSelected ? 700 : 400,
@@ -139,9 +139,9 @@ export default function StepCalendar({ barber, service, selectedDate, selectedSl
                       style={{
                         padding: '0.5rem 0.875rem',
                         borderRadius: 8,
-                        border: `1.5px solid ${isSelected ? 'var(--accent)' : slot.available ? '#22c55e55' : '#f8717155'}`,
+                        border: `1.5px solid ${isSelected ? 'var(--clr-accent)' : slot.available ? '#22c55e55' : '#f8717155'}`,
                         background: isSelected
-                          ? 'var(--accent)'
+                          ? 'var(--clr-accent)'
                           : slot.available
                             ? '#22c55e18'
                             : '#f8717118',

@@ -9,7 +9,7 @@ export default function Spinner({ size = 24 }: { size?: number }) {
     >
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
       <circle cx="12" cy="12" r="10" stroke="var(--border)" strokeWidth="2.5" />
-      <path d="M12 2a10 10 0 0 1 10 10" stroke="var(--accent)" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M12 2a10 10 0 0 1 10 10" stroke="var(--clr-accent)" strokeWidth="2.5" strokeLinecap="round" />
     </svg>
   )
 }

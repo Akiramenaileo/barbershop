@@ -39,7 +39,7 @@ export default function DashboardView() {
       {/* Stats */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
         {[
-          { label: 'Turnos hoy', value: todayAppts.length, color: 'var(--accent)' },
+          { label: 'Turnos hoy', value: todayAppts.length, color: 'var(--clr-accent)' },
           { label: 'Pago pendiente', value: pendingCount, color: '#FBBF24' },
           { label: 'Confirmados', value: confirmedCount, color: '#22c55e' },
           { label: 'Completados', value: completedCount, color: '#60a5fa' }
@@ -66,7 +66,7 @@ export default function DashboardView() {
               const statusInfo = STATUS_LABELS[appt.status]
               return (
                 <div key={appt._id} className="card" style={{ padding: '1rem 1.25rem', display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                  <span style={{ fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, color: 'var(--accent)', minWidth: 44 }}>{appt.timeSlot}</span>
+                  <span style={{ fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, color: 'var(--clr-accent)', minWidth: 44 }}>{appt.timeSlot}</span>
                   <div style={{ flex: 1 }}>
                     <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{appt.clientName}</div>
                     <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>

@@ -68,7 +68,7 @@ export default function StepBarber({ selected, onSelect }: Props) {
                 <div style={{
                   position: 'absolute', top: -12, left: '50%', transform: 'translateX(-50%)',
                   width: 52, height: 52, borderRadius: '50%',
-                  border: `2px solid ${isSelected ? 'var(--accent)' : 'var(--border)'}`,
+                  border: `2px solid ${isSelected ? 'var(--clr-accent)' : 'var(--border)'}`,
                   background: 'var(--bg-hover)', overflow: 'hidden',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   transition: 'border-color 0.2s'
@@ -95,7 +95,7 @@ export default function StepBarber({ selected, onSelect }: Props) {
                 <div style={{
                   position: 'absolute', top: 10, right: 10,
                   width: 20, height: 20, borderRadius: '50%',
-                  background: 'var(--accent)', display: 'flex',
+                  background: 'var(--clr-accent)', display: 'flex',
                   alignItems: 'center', justifyContent: 'center',
                   fontSize: '0.7rem', color: '#000', fontWeight: 700
                 }}>

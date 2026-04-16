@@ -46,7 +46,7 @@ export default function AdminsView() {
               <div style={{
                 width: 36, height: 36, borderRadius: '50%', background: 'rgba(212,160,23,0.15)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontWeight: 700, color: 'var(--accent)', fontSize: '0.85rem', flexShrink: 0
+                fontWeight: 700, color: 'var(--clr-accent)', fontSize: '0.85rem', flexShrink: 0
               }}>
                 {a.name.charAt(0).toUpperCase()}
               </div>

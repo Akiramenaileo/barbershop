@@ -65,7 +65,7 @@ export default function ServicesView() {
               </div>
               <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', fontSize: '0.85rem' }}>
                 <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, color: 'var(--accent)' }}>${s.price.toLocaleString('es-AR')}</div>
+                  <div style={{ fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, color: 'var(--clr-accent)' }}>${s.price.toLocaleString('es-AR')}</div>
                   <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{s.duration} min</div>
                 </div>
                 <div style={{ textAlign: 'right' }}>

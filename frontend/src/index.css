@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --accent: #785D32;
-  --accent-light: #9B7A42;
+  --clr-accent: #785D32;
+  --clr-accent-light: #9B7A42;
   --bg: #0D0907;
   --bg-card: #110B08;
   --bg-hover: #1A1008;
@@ -34,7 +34,7 @@ h1, h2, h3 {
 ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 0; }
 
 .btn-primary {
-  background: var(--accent);
+  background: var(--clr-accent);
   color: #E8D9C4;
   font-weight: 600;
   padding: 0.75rem 2rem;
@@ -46,7 +46,7 @@ h1, h2, h3 {
   font-size: 0.875rem;
   letter-spacing: 0.03em;
 }
-.btn-primary:hover { background: var(--accent-light); }
+.btn-primary:hover { background: var(--clr-accent-light); }
 .btn-primary:disabled { opacity: 0.35; cursor: not-allowed; }
 
 .btn-ghost {

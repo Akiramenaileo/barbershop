@@ -50,7 +50,7 @@ export default function AdminLayout() {
                 fontSize: '0.875rem',
                 fontWeight: 500,
                 color: isActive ? '#000' : 'var(--text-muted)',
-                background: isActive ? 'var(--accent)' : 'transparent',
+                background: isActive ? 'var(--clr-accent)' : 'transparent',
                 transition: 'all 0.15s',
                 display: 'block'
               })}

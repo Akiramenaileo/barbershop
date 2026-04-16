@@ -88,7 +88,7 @@ export default function AppointmentsView() {
                 >
                   <div style={{ minWidth: 80 }}>
                     <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.8rem', color: 'var(--text-muted)' }}>{appt.date}</div>
-                    <div style={{ fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, color: 'var(--accent)' }}>{appt.timeSlot}</div>
+                    <div style={{ fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, color: 'var(--clr-accent)' }}>{appt.timeSlot}</div>
                   </div>
                   <div style={{ flex: 1 }}>
                     <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{appt.clientName}</div>
@@ -144,7 +144,7 @@ export default function AppointmentsView() {
                             style={{
                               padding: '0.3rem 0.75rem', borderRadius: 6, border: '1px solid var(--border)',
                               background: appt.depositStatus === ds ? 'rgba(212,160,23,0.15)' : 'transparent',
-                              color: appt.depositStatus === ds ? 'var(--accent)' : 'var(--text-muted)',
+                              color: appt.depositStatus === ds ? 'var(--clr-accent)' : 'var(--text-muted)',
                               cursor: appt.depositStatus === ds ? 'default' : 'pointer', fontSize: '0.75rem'
                             }}
                           >

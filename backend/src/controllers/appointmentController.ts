@@ -14,17 +14,25 @@ const DAY_NAMES: Record<number, keyof IBarber['schedule']> = {
   6: 'saturday'
 }
 
-function generateSlots(start: string, end: string, duration: number): string[] {
+function toMin(t: string): number {
+  const [h, m] = t.split(':').map(Number)
+  return h * 60 + m
+}
+
+function generateSlots(start: string, end: string, duration: number, breakStart?: string, breakEnd?: string): string[] {
   const slots: string[] = []
-  const [sh, sm] = start.split(':').map(Number)
-  const [eh, em] = end.split(':').map(Number)
-  let current = sh * 60 + sm
-  const endMin = eh * 60 + em
+  let current = toMin(start)
+  const endMin = toMin(end)
+  const bStart = breakStart ? toMin(breakStart) : null
+  const bEnd = breakEnd ? toMin(breakEnd) : null
 
   while (current + duration <= endMin) {
-    const h = String(Math.floor(current / 60)).padStart(2, '0')
-    const m = String(current % 60).padStart(2, '0')
-    slots.push(`${h}:${m}`)
+    const inBreak = bStart !== null && bEnd !== null && current >= bStart && current < bEnd
+    if (!inBreak) {
+      const h = String(Math.floor(current / 60)).padStart(2, '0')
+      const m = String(current % 60).padStart(2, '0')
+      slots.push(`${h}:${m}`)
+    }
     current += duration
   }
   return slots
@@ -46,7 +54,10 @@ export const getAvailableSlots = async (req: Request, res: Response): Promise<vo
     return
   }
 
-  const allSlots = generateSlots(daySchedule.start, daySchedule.end, service.duration)
+  const allSlots = generateSlots(
+    daySchedule.start, daySchedule.end, service.duration,
+    daySchedule.breakStart || undefined, daySchedule.breakEnd || undefined
+  )
 
   const booked = await Appointment.find({
     barber: barberId,
@@ -55,10 +66,13 @@ export const getAvailableSlots = async (req: Request, res: Response): Promise<vo
   }).select('timeSlot')
 
   const bookedSet = new Set(booked.map(a => a.timeSlot))
+  const blockedSet = new Set(
+    (barber.blockedSlots || []).filter(s => s.date === date).map(s => s.time)
+  )
 
   const slots = allSlots.map(slot => ({
     time: slot,
-    available: !bookedSet.has(slot)
+    available: !bookedSet.has(slot) && !blockedSet.has(slot)
   }))
 
   res.json({ slots })

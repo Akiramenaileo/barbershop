@@ -34,3 +34,10 @@ export const deleteBarber = async (token: string, id: string): Promise<void> => 
     headers: { Authorization: `Bearer ${token}` }
   })
 }
+
+export const toggleBlockedSlot = async (token: string, id: string, date: string, time: string): Promise<Barber> => {
+  const { data } = await axios.patch(`${API}/barbers/${id}/blocked-slots`, { date, time }, {
+    headers: { Authorization: `Bearer ${token}` }
+  })
+  return data
+}

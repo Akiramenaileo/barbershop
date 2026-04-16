@@ -13,12 +13,15 @@ export interface Barber {
     saturday: DaySchedule
     sunday: DaySchedule
   }
+  blockedSlots: Array<{ date: string; time: string }>
 }
 
 export interface DaySchedule {
   enabled: boolean
   start: string
   end: string
+  breakStart?: string
+  breakEnd?: string
 }
 
 export interface Service {

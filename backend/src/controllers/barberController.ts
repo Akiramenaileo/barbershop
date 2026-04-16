@@ -26,3 +26,18 @@ export const deleteBarber = async (req: Request, res: Response): Promise<void> =
   await Barber.findByIdAndDelete(req.params.id)
   res.json({ message: 'Barbero eliminado' })
 }
+
+export const toggleBlockedSlot = async (req: Request, res: Response): Promise<void> => {
+  const { date, time } = req.body
+  const barber = await Barber.findById(req.params.id)
+  if (!barber) { res.status(404).json({ message: 'No encontrado' }); return }
+
+  const idx = barber.blockedSlots.findIndex(s => s.date === date && s.time === time)
+  if (idx >= 0) {
+    barber.blockedSlots.splice(idx, 1)
+  } else {
+    barber.blockedSlots.push({ date, time })
+  }
+  await barber.save()
+  res.json(barber)
+}

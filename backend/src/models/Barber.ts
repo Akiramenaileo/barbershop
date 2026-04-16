@@ -4,6 +4,8 @@ type DaySchedule = {
   enabled: boolean
   start: string
   end: string
+  breakStart?: string
+  breakEnd?: string
 }
 
 export interface IBarber extends Document {
@@ -20,12 +22,15 @@ export interface IBarber extends Document {
     saturday: DaySchedule
     sunday: DaySchedule
   }
+  blockedSlots: Array<{ date: string; time: string }>
 }
 
 const daySchema = {
   enabled: { type: Boolean, default: false },
   start: { type: String, default: '09:00' },
-  end: { type: String, default: '19:00' }
+  end: { type: String, default: '19:00' },
+  breakStart: { type: String, default: '' },
+  breakEnd: { type: String, default: '' }
 }
 
 const barberSchema = new Schema<IBarber>(
@@ -34,6 +39,10 @@ const barberSchema = new Schema<IBarber>(
     photo: { type: String, default: '' },
     bio: { type: String, default: '' },
     active: { type: Boolean, default: true },
+    blockedSlots: [{
+      date: { type: String, required: true },
+      time: { type: String, required: true }
+    }],
     schedule: {
       monday: { type: daySchema, default: () => ({ enabled: true, start: '09:00', end: '19:00' }) },
       tuesday: { type: daySchema, default: () => ({ enabled: true, start: '09:00', end: '19:00' }) },

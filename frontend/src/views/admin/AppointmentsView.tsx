@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { fetchAppointments, updateAppointment } from '../../api/appointments'
+import { fetchAppointments, updateAppointment, deleteAppointment } from '../../api/appointments'
 import { Appointment } from '../../types'
 import Spinner from '../../components/ui/Spinner'
 
@@ -40,6 +40,11 @@ export default function AppointmentsView() {
     mutationFn: ({ id, body }: { id: string; body: { status?: string; depositStatus?: string; notes?: string } }) =>
       updateAppointment(token(), id, body),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['admin-appointments'] })
+  })
+
+  const { mutate: removeAppt } = useMutation({
+    mutationFn: (id: string) => deleteAppointment(token(), id),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['admin-appointments'] }); setExpanded(null) }
   })
 
   return (
@@ -154,8 +159,8 @@ export default function AppointmentsView() {
                       </div>
                     </div>
 
-                    {/* WhatsApp */}
-                    <div style={{ marginLeft: 'auto' }}>
+                    {/* WhatsApp + Eliminar */}
+                    <div style={{ marginLeft: 'auto', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                       <a
                         href={buildWaLink(appt)}
                         target="_blank"
@@ -169,6 +174,16 @@ export default function AppointmentsView() {
                       >
                         💬 WhatsApp
                       </a>
+                      <button
+                        onClick={() => confirm('¿Eliminar este turno?') && removeAppt(appt._id)}
+                        style={{
+                          padding: '0.4rem 0.75rem', borderRadius: 6,
+                          border: '1px solid #f8717144', background: '#f8717110',
+                          color: '#f87171', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600
+                        }}
+                      >
+                        Eliminar
+                      </button>
                     </div>
                   </div>
                 )}

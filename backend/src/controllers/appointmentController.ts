@@ -159,3 +159,9 @@ export const getAppointmentById = async (req: Request, res: Response): Promise<v
   if (!appointment) { res.status(404).json({ message: 'No encontrado' }); return }
   res.json(appointment)
 }
+
+export const deleteAppointment = async (req: Request, res: Response): Promise<void> => {
+  const appointment = await Appointment.findByIdAndDelete(req.params.id)
+  if (!appointment) { res.status(404).json({ message: 'No encontrado' }); return }
+  res.json({ message: 'Turno eliminado' })
+}

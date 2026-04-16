@@ -4,7 +4,8 @@ import {
   createAppointment,
   getAppointments,
   updateAppointmentStatus,
-  getAppointmentById
+  getAppointmentById,
+  deleteAppointment
 } from '../controllers/appointmentController'
 import { protect } from '../middleware/auth'
 
@@ -15,5 +16,6 @@ router.post('/', createAppointment)
 router.get('/:id', getAppointmentById)
 router.get('/', protect, getAppointments)
 router.patch('/:id', protect, updateAppointmentStatus)
+router.delete('/:id', protect, deleteAppointment)
 
 export default router

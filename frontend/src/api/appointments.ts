@@ -48,3 +48,9 @@ export const updateAppointment = async (
   })
   return data
 }
+
+export const deleteAppointment = async (token: string, id: string): Promise<void> => {
+  await axios.delete(`${API}/appointments/${id}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  })
+}

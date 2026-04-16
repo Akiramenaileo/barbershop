@@ -1,0 +1,19 @@
+import { Router } from 'express'
+import {
+  getAvailableSlots,
+  createAppointment,
+  getAppointments,
+  updateAppointmentStatus,
+  getAppointmentById
+} from '../controllers/appointmentController'
+import { protect } from '../middleware/auth'
+
+const router = Router()
+
+router.get('/slots', getAvailableSlots)
+router.post('/', createAppointment)
+router.get('/:id', getAppointmentById)
+router.get('/', protect, getAppointments)
+router.patch('/:id', protect, updateAppointmentStatus)
+
+export default router

@@ -276,17 +276,11 @@ export default function BarbersView() {
                         </label>
                         {day.enabled && (
                           <>
-                            <input type="time" value={day.start} style={{ width: 90, padding: '0.25rem 0.4rem', fontSize: '0.8rem' }}
+                            <input type="time" value={day.start} style={{ width: 100, padding: '0.25rem 0.5rem', fontSize: '0.8rem' }}
                               onChange={e => setForm(fm => ({ ...fm, schedule: { ...fm.schedule, [key]: { ...day, start: e.target.value } } }))} />
-                            <span style={{ color: 'var(--text-muted)' }}>—</span>
-                            <input type="time" value={day.end} style={{ width: 90, padding: '0.25rem 0.4rem', fontSize: '0.8rem' }}
+                            <span style={{ color: 'var(--text-muted)' }}>a</span>
+                            <input type="time" value={day.end} style={{ width: 100, padding: '0.25rem 0.5rem', fontSize: '0.8rem' }}
                               onChange={e => setForm(fm => ({ ...fm, schedule: { ...fm.schedule, [key]: { ...day, end: e.target.value } } }))} />
-                            <span style={{ color: 'var(--text-muted)', fontSize: '0.7rem', marginLeft: '0.25rem' }}>descanso</span>
-                            <input type="time" value={day.breakStart || ''} placeholder="--:--" style={{ width: 90, padding: '0.25rem 0.4rem', fontSize: '0.8rem' }}
-                              onChange={e => setForm(fm => ({ ...fm, schedule: { ...fm.schedule, [key]: { ...day, breakStart: e.target.value } } }))} />
-                            <span style={{ color: 'var(--text-muted)' }}>—</span>
-                            <input type="time" value={day.breakEnd || ''} placeholder="--:--" style={{ width: 90, padding: '0.25rem 0.4rem', fontSize: '0.8rem' }}
-                              onChange={e => setForm(fm => ({ ...fm, schedule: { ...fm.schedule, [key]: { ...day, breakEnd: e.target.value } } }))} />
                           </>
                         )}
                       </div>

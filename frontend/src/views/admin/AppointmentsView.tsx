@@ -52,14 +52,13 @@ export default function AppointmentsView() {
       <h1 style={{ fontWeight: 700, fontSize: '1.5rem', marginBottom: '1.5rem' }}>Turnos</h1>
 
       {/* Filters */}
-      <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '0.75rem', marginBottom: '1.5rem' }}>
         <input
           type="date"
           value={filterDate}
           onChange={e => setFilterDate(e.target.value)}
-          style={{ width: 160 }}
         />
-        <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} style={{ width: 180 }}>
+        <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)}>
           <option value="">Todos los estados</option>
           <option value="pending_payment">Pago pendiente</option>
           <option value="confirmed">Confirmados</option>

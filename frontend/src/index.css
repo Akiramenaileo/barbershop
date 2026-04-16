@@ -181,3 +181,87 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     display: none;
   }
 }
+
+/* Admin layout */
+.admin-main {
+  flex: 1;
+  padding: 2rem;
+  overflow: auto;
+  background: var(--bg);
+}
+
+.admin-content {
+  /* no padding on desktop — admin-main provides it */
+}
+
+.admin-topbar {
+  display: none;
+}
+
+.admin-bottom-nav {
+  display: none;
+}
+
+.admin-bottom-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  flex: 1;
+  padding: 0.5rem 0.25rem;
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  transition: color 0.15s;
+}
+
+.admin-bottom-nav-item.active {
+  color: var(--gold);
+}
+
+@media (max-width: 600px) {
+  .admin-main {
+    padding: 0 0 5rem;
+  }
+
+  .admin-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.875rem 1rem;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .admin-bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+    z-index: 50;
+    padding: 0.25rem 0 env(safe-area-inset-bottom, 0);
+  }
+
+  .admin-content {
+    padding: 1.25rem 1rem;
+  }
+
+  /* Make date/select inputs full width on mobile */
+  input[type="date"],
+  select {
+    width: 100% !important;
+  }
+
+  /* Admin grids: 1 column on small screens */
+  .admin-grid-auto {
+    grid-template-columns: 1fr !important;
+  }
+}

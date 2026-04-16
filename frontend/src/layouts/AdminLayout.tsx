@@ -7,11 +7,11 @@ const useAuth = () => {
 }
 
 const navItems = [
-  { to: '/admin', label: 'Dashboard', exact: true },
-  { to: '/admin/turnos', label: 'Turnos' },
-  { to: '/admin/barberos', label: 'Barberos' },
-  { to: '/admin/servicios', label: 'Servicios' },
-  { to: '/admin/administradores', label: 'Admins' }
+  { to: '/admin', label: 'Dashboard', icon: '⊟', exact: true },
+  { to: '/admin/turnos', label: 'Turnos', icon: '≡' },
+  { to: '/admin/barberos', label: 'Barberos', icon: '✂' },
+  { to: '/admin/servicios', label: 'Servicios', icon: '◈' },
+  { to: '/admin/administradores', label: 'Admins', icon: '◎' }
 ]
 
 export default function AdminLayout() {
@@ -27,6 +27,7 @@ export default function AdminLayout() {
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
+      {/* Desktop sidebar */}
       <aside className="admin-sidebar" style={{
         width: 220, background: 'var(--bg-card)', borderRight: '1px solid var(--border)',
         display: 'flex', flexDirection: 'column', padding: '1.5rem 1rem'
@@ -63,9 +64,38 @@ export default function AdminLayout() {
           Cerrar sesión
         </button>
       </aside>
-      <main style={{ flex: 1, padding: '2rem', overflow: 'auto', background: 'var(--bg)' }}>
-        <Outlet />
+
+      {/* Content */}
+      <main className="admin-main">
+        {/* Mobile top bar */}
+        <div className="admin-topbar">
+          <Logo size="sm" />
+          <button
+            onClick={logout}
+            style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '0.8rem' }}
+          >
+            Salir
+          </button>
+        </div>
+        <div className="admin-content">
+          <Outlet />
+        </div>
       </main>
+
+      {/* Mobile bottom nav */}
+      <nav className="admin-bottom-nav">
+        {navItems.map(item => (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            end={item.exact}
+            className={({ isActive }) => `admin-bottom-nav-item${isActive ? ' active' : ''}`}
+          >
+            <span style={{ fontSize: '1.1rem', lineHeight: 1 }}>{item.icon}</span>
+            <span>{item.label}</span>
+          </NavLink>
+        ))}
+      </nav>
     </div>
   )
 }

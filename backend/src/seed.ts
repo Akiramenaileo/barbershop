@@ -42,7 +42,9 @@ async function seed() {
     { name: 'Corte de cabello', description: 'Corte clásico o moderno', price: 10000, duration: 30, depositAmount: 2000, active: true },
     { name: 'Corte + Barba', description: 'Corte completo más arreglo de barba', price: 13000, duration: 60, depositAmount: 2500, active: true },
     { name: 'Barba', description: 'Arreglo y perfilado de barba', price: 3000, duration: 30, depositAmount: 500, active: true },
-    { name: 'Fade', description: 'Degradado bajo, medio o alto', price: 12000, duration: 45, depositAmount: 2000, active: true }
+    { name: 'Fade', description: 'Degradado bajo, medio o alto', price: 12000, duration: 45, depositAmount: 2000, active: true },
+    { name: 'Afeitado clásico', description: 'Afeitado con navaja recta, toalla caliente y productos premium', price: 8000, duration: 30, depositAmount: 1500, active: true },
+    { name: 'Corte de niño', description: 'Corte para menores de 12 años, relajado y sin apuros', price: 7000, duration: 25, depositAmount: 1000, active: true }
   ])
 
   console.log('Seed completado')

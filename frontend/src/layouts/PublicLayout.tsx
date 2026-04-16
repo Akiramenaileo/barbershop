@@ -66,7 +66,7 @@ export default function PublicLayout() {
           Barber<span style={{ color: 'var(--gold)' }}>Shop</span>
         </span>
         <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', letterSpacing: '0.04em' }}>
-          © 2025 · Todos los derechos reservados
+          © 2026 · Todos los derechos reservados
         </span>
       </footer>
     </div>

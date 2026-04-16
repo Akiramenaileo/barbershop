@@ -48,7 +48,7 @@ export default function LandingView() {
             marginBottom: '1.5rem'
           }}>
             <span style={{ width: 32, height: 1, background: 'var(--gold)', display: 'inline-block' }} />
-            <span className="section-label">Tucumán · Desde 2018</span>
+            <span className="section-label">Tucumán · Desde 2025</span>
           </div>
 
           {/* Main heading */}

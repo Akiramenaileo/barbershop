@@ -30,7 +30,7 @@ export default function AdminLayout() {
       {/* Desktop sidebar */}
       <aside className="admin-sidebar" style={{
         width: 220, background: 'var(--bg-card)', borderRight: '1px solid var(--border)',
-        display: 'flex', flexDirection: 'column', padding: '1.5rem 1rem'
+        flexDirection: 'column', padding: '1.5rem 1rem'
       }}>
         <div style={{ marginBottom: '2rem' }}>
           <Logo size="sm" />

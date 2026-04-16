@@ -194,6 +194,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   /* no padding on desktop — admin-main provides it */
 }
 
+.admin-sidebar {
+  display: flex;
+}
+
 .admin-topbar {
   display: none;
 }

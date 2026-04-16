@@ -27,13 +27,13 @@ async function seed() {
     {
       name: 'Matías García',
       bio: 'Cortes clásicos y barba a tijera.',
-      photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
+      photo: 'https://images.pexels.com/photos/18483778/pexels-photo-18483778.jpeg?auto=compress&cs=tinysrgb&w=400',
       active: true
     },
     {
       name: 'Tomás Soria',
       bio: 'Diseños personalizados y colorimetría.',
-      photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&q=80',
+      photo: 'https://images.pexels.com/photos/7697224/pexels-photo-7697224.jpeg?auto=compress&cs=tinysrgb&w=400',
       active: true
     }
   ])

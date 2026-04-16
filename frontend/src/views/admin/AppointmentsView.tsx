@@ -17,7 +17,7 @@ const WA_NUMBER = import.meta.env.VITE_WA_NUMBER || ''
 
 function buildWaLink(appt: Appointment) {
   const text = encodeURIComponent(
-    `Hola ${appt.clientName}! Tu turno está confirmado:\n📅 ${appt.date} a las ${appt.timeSlot}\n✂️ ${(appt.service as { name: string }).name} con ${(appt.barber as { name: string }).name}\nTe esperamos!`
+    `Hola ${appt.clientName}! Tu turno está confirmado:\n📅 ${appt.date} a las ${appt.timeSlot}\n✂️ ${(appt.service as { name: string } | null)?.name ?? '—'} con ${(appt.barber as { name: string } | null)?.name ?? '—'}\nTe esperamos!`
   )
   return `https://wa.me/${appt.clientPhone.replace(/\D/g, '')}?text=${text}`
 }
@@ -93,7 +93,7 @@ export default function AppointmentsView() {
                   <div style={{ flex: 1 }}>
                     <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{appt.clientName}</div>
                     <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                      {appt.clientPhone} · {(appt.service as { name: string }).name} · {(appt.barber as { name: string }).name}
+                      {appt.clientPhone} · {(appt.service as { name: string } | null)?.name ?? '—'} · {(appt.barber as { name: string } | null)?.name ?? '—'}
                     </div>
                   </div>
                   <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>

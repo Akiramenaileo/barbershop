@@ -70,7 +70,7 @@ export default function DashboardView() {
                   <div style={{ flex: 1 }}>
                     <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{appt.clientName}</div>
                     <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                      {(appt.service as { name: string }).name} · {(appt.barber as { name: string }).name}
+                      {(appt.service as { name: string } | null)?.name ?? '—'} · {(appt.barber as { name: string } | null)?.name ?? '—'}
                     </div>
                   </div>
                   <span style={{

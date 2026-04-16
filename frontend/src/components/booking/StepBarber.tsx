@@ -45,7 +45,7 @@ export default function StepBarber({ selected, onSelect }: Props) {
       <div className="barber-cards">
         {barbers?.map((b, i) => {
           const isSelected = selected?._id === b._id
-          const chairColors = ['#785D32', '#3E160C', '#9B7A42']
+          const chairColors = ['#785D32', '#4A2C0A', '#9B7A42']
           const chairColor = chairColors[i % chairColors.length]
           return (
             <button

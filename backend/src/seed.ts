@@ -21,19 +21,19 @@ async function seed() {
     {
       name: 'Lucas Rodríguez',
       bio: 'Especialista en fade y degradados.',
-      photo: '',
+      photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
       active: true
     },
     {
       name: 'Matías García',
       bio: 'Cortes clásicos y barba a tijera.',
-      photo: '',
+      photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
       active: true
     },
     {
       name: 'Tomás Soria',
       bio: 'Diseños personalizados y colorimetría.',
-      photo: '',
+      photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&q=80',
       active: true
     }
   ])

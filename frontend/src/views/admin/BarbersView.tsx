@@ -164,30 +164,32 @@ export default function BarbersView() {
                 </div>
               </div>
               <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: 1.5, marginBottom: '1rem' }}>{b.bio || '—'}</p>
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
-                <button className="btn-ghost" style={{ flex: 1, fontSize: '0.8rem', padding: '0.4rem' }} onClick={() => startEdit(b)}>Editar</button>
-                <button
-                  className="btn-ghost"
-                  style={{ flex: 1, fontSize: '0.8rem', padding: '0.4rem' }}
-                  onClick={() => { setBlockingBarber(b); setBlockDate('') }}
-                >
-                  🔒 Turnos
-                </button>
-                <button
-                  className="btn-ghost"
-                  style={{ flex: 1, fontSize: '0.8rem', padding: '0.4rem' }}
-                  onClick={() => { setVacBarber(b); setVacYear(new Date().getFullYear()); setVacMonth(new Date().getMonth()) }}
-                >
-                  📅 Días
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+                <button className="btn-ghost" style={{ fontSize: '0.8rem', padding: '0.5rem' }} onClick={() => startEdit(b)}>
+                  ✏️ Editar
                 </button>
                 <button
                   onClick={() => confirm('¿Eliminar barbero?') && remove(b._id)}
                   style={{
-                    padding: '0.4rem 0.75rem', borderRadius: 8, border: '1px solid var(--border)',
-                    background: 'transparent', color: '#f87171', cursor: 'pointer', fontSize: '0.8rem'
+                    padding: '0.5rem', borderRadius: 4, border: '1px solid #f8717144',
+                    background: '#f8717110', color: '#f87171', cursor: 'pointer', fontSize: '0.8rem'
                   }}
                 >
-                  ✕
+                  🗑️ Eliminar
+                </button>
+                <button
+                  className="btn-ghost"
+                  style={{ fontSize: '0.8rem', padding: '0.5rem' }}
+                  onClick={() => { setBlockingBarber(b); setBlockDate('') }}
+                >
+                  🔒 Bloquear turnos
+                </button>
+                <button
+                  className="btn-ghost"
+                  style={{ fontSize: '0.8rem', padding: '0.5rem' }}
+                  onClick={() => { setVacBarber(b); setVacYear(new Date().getFullYear()); setVacMonth(new Date().getMonth()) }}
+                >
+                  📅 Descansos
                 </button>
               </div>
             </div>
@@ -204,7 +206,7 @@ export default function BarbersView() {
         }}>
           <div className="card" style={{ width: '100%', maxWidth: 400, maxHeight: '90vh', overflow: 'auto', padding: '1.75rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
-              <h2 style={{ fontWeight: 700, fontSize: '1.1rem' }}>Días de descanso — {vacBarber.name}</h2>
+              <h2 style={{ fontWeight: 700, fontSize: '1.1rem' }}>Descansos — {vacBarber.name}</h2>
               <button onClick={() => setVacBarber(null)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '1.2rem' }}>✕</button>
             </div>
             <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>

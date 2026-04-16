@@ -195,8 +195,12 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
   .btn-primary,
   .btn-ghost {
-    padding: 0.55rem 0.875rem;
-    font-size: 0.8rem;
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.78rem !important;
+  }
+
+  .admin-content h1 {
+    font-size: 1.1rem !important;
   }
 
   .admin-sidebar {

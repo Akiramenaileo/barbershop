@@ -156,6 +156,22 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   }
 }
 
+/* Admin layout */
+.admin-main {
+  flex: 1;
+  padding: 2rem;
+  overflow: auto;
+  background: var(--bg);
+}
+
+.admin-content {
+  /* no padding on desktop — admin-main provides it */
+}
+
+.admin-sidebar {
+  display: flex;
+}
+
 @media (max-width: 600px) {
   .booking-container {
     padding: 1.5rem 1rem;
@@ -180,22 +196,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   .admin-sidebar {
     display: none;
   }
-}
-
-/* Admin layout */
-.admin-main {
-  flex: 1;
-  padding: 2rem;
-  overflow: auto;
-  background: var(--bg);
-}
-
-.admin-content {
-  /* no padding on desktop — admin-main provides it */
-}
-
-.admin-sidebar {
-  display: flex;
 }
 
 .admin-topbar {

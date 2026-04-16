@@ -39,10 +39,10 @@ async function seed() {
   ])
 
   await Service.create([
-    { name: 'Corte de cabello', description: 'Corte clásico o moderno', price: 3500, duration: 30, depositAmount: 500, active: true },
-    { name: 'Corte + Barba', description: 'Corte completo más arreglo de barba', price: 5000, duration: 60, depositAmount: 800, active: true },
-    { name: 'Barba', description: 'Arreglo y perfilado de barba', price: 2000, duration: 30, depositAmount: 300, active: true },
-    { name: 'Fade', description: 'Degradado bajo, medio o alto', price: 4000, duration: 45, depositAmount: 600, active: true }
+    { name: 'Corte de cabello', description: 'Corte clásico o moderno', price: 10000, duration: 30, depositAmount: 2000, active: true },
+    { name: 'Corte + Barba', description: 'Corte completo más arreglo de barba', price: 13000, duration: 60, depositAmount: 2500, active: true },
+    { name: 'Barba', description: 'Arreglo y perfilado de barba', price: 3000, duration: 30, depositAmount: 500, active: true },
+    { name: 'Fade', description: 'Degradado bajo, medio o alto', price: 12000, duration: 45, depositAmount: 2000, active: true }
   ])
 
   console.log('Seed completado')

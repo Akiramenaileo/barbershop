@@ -49,7 +49,7 @@ export const getAvailableSlots = async (req: Request, res: Response): Promise<vo
   const dayName = DAY_NAMES[dateObj.getDay()]
   const daySchedule = barber.schedule[dayName]
 
-  if (!daySchedule.enabled) {
+  if (!daySchedule.enabled || (barber.blockedDays || []).includes(date)) {
     res.json({ slots: [] })
     return
   }

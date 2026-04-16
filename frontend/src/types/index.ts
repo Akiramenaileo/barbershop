@@ -14,6 +14,7 @@ export interface Barber {
     sunday: DaySchedule
   }
   blockedSlots: Array<{ date: string; time: string }>
+  blockedDays: string[]
 }
 
 export interface DaySchedule {

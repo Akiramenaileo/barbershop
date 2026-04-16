@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { fetchAllBarbers, createBarber, updateBarber, deleteBarber, toggleBlockedSlot } from '../../api/barbers'
+import { fetchAllBarbers, createBarber, updateBarber, deleteBarber, toggleBlockedSlot, toggleBlockedDay } from '../../api/barbers'
 import { Barber } from '../../types'
 import Spinner from '../../components/ui/Spinner'
 
@@ -27,6 +27,21 @@ function slotsForDay(barber: Barber, date: string): string[] {
     cur += 30
   }
   return result
+}
+
+const MONTHS_ES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
+const WEEK_ES = ['Do','Lu','Ma','Mi','Ju','Vi','Sá']
+
+function calendarDays(year: number, month: number): (string | null)[] {
+  const first = new Date(year, month, 1)
+  const last = new Date(year, month + 1, 0)
+  const cells: (string | null)[] = Array(first.getDay()).fill(null)
+  for (let d = 1; d <= last.getDate(); d++) {
+    const dd = String(d).padStart(2, '0')
+    const mm = String(month + 1).padStart(2, '0')
+    cells.push(`${year}-${mm}-${dd}`)
+  }
+  return cells
 }
 
 const token = () => localStorage.getItem('barber_token') ?? ''
@@ -69,6 +84,9 @@ export default function BarbersView() {
   const [form, setForm] = useState<BarberForm>(emptyForm())
   const [blockingBarber, setBlockingBarber] = useState<Barber | null>(null)
   const [blockDate, setBlockDate] = useState('')
+  const [vacBarber, setVacBarber] = useState<Barber | null>(null)
+  const [vacYear, setVacYear] = useState(new Date().getFullYear())
+  const [vacMonth, setVacMonth] = useState(new Date().getMonth())
 
   const { data: barbers, isLoading } = useQuery({ queryKey: ['admin-barbers'], queryFn: () => fetchAllBarbers(token()) })
 
@@ -77,6 +95,11 @@ export default function BarbersView() {
       ? updateBarber(token(), editing._id, form)
       : createBarber(token(), form),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['admin-barbers'] }); qc.invalidateQueries({ queryKey: ['barbers'] }); reset() }
+  })
+
+  const { mutate: toggleDay } = useMutation({
+    mutationFn: ({ id, date }: { id: string; date: string }) => toggleBlockedDay(token(), id, date),
+    onSuccess: (updated) => { setVacBarber(updated); qc.invalidateQueries({ queryKey: ['admin-barbers'] }) }
   })
 
   const { mutate: toggleSlot } = useMutation({
@@ -148,7 +171,14 @@ export default function BarbersView() {
                   style={{ flex: 1, fontSize: '0.8rem', padding: '0.4rem' }}
                   onClick={() => { setBlockingBarber(b); setBlockDate('') }}
                 >
-                  🔒 Bloquear
+                  🔒 Turnos
+                </button>
+                <button
+                  className="btn-ghost"
+                  style={{ flex: 1, fontSize: '0.8rem', padding: '0.4rem' }}
+                  onClick={() => { setVacBarber(b); setVacYear(new Date().getFullYear()); setVacMonth(new Date().getMonth()) }}
+                >
+                  📅 Días
                 </button>
                 <button
                   onClick={() => confirm('¿Eliminar barbero?') && remove(b._id)}
@@ -162,6 +192,78 @@ export default function BarbersView() {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Blocked days (vacation) modal */}
+      {vacBarber && (
+        <div style={{
+          position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          zIndex: 100, padding: '1rem'
+        }}>
+          <div className="card" style={{ width: '100%', maxWidth: 400, maxHeight: '90vh', overflow: 'auto', padding: '1.75rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+              <h2 style={{ fontWeight: 700, fontSize: '1.1rem' }}>Días de descanso — {vacBarber.name}</h2>
+              <button onClick={() => setVacBarber(null)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '1.2rem' }}>✕</button>
+            </div>
+            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
+              Clic en un día para bloquearlo/desbloquearlo completo
+            </p>
+
+            {/* Month nav */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.875rem' }}>
+              <button
+                onClick={() => { if (vacMonth === 0) { setVacMonth(11); setVacYear(y => y - 1) } else setVacMonth(m => m - 1) }}
+                style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '1.1rem', padding: '0.25rem 0.5rem' }}
+              >←</button>
+              <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>{MONTHS_ES[vacMonth]} {vacYear}</span>
+              <button
+                onClick={() => { if (vacMonth === 11) { setVacMonth(0); setVacYear(y => y + 1) } else setVacMonth(m => m + 1) }}
+                style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '1.1rem', padding: '0.25rem 0.5rem' }}
+              >→</button>
+            </div>
+
+            {/* Week headers */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '0.2rem', marginBottom: '0.3rem' }}>
+              {WEEK_ES.map(d => (
+                <div key={d} style={{ textAlign: 'center', fontSize: '0.65rem', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', padding: '0.2rem 0' }}>{d}</div>
+              ))}
+            </div>
+
+            {/* Days grid */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '0.2rem' }}>
+              {calendarDays(vacYear, vacMonth).map((date, i) => {
+                if (!date) return <div key={`e-${i}`} />
+                const blocked = (vacBarber.blockedDays || []).includes(date)
+                const isPast = date < new Date().toISOString().slice(0, 10)
+                return (
+                  <button
+                    key={date}
+                    onClick={() => !isPast && toggleDay({ id: vacBarber._id, date })}
+                    style={{
+                      height: 36, borderRadius: 6, border: 'none',
+                      background: blocked ? '#f8717130' : isPast ? 'transparent' : 'rgba(232,217,196,0.04)',
+                      color: blocked ? '#f87171' : isPast ? 'var(--text-muted)' : 'var(--text)',
+                      cursor: isPast ? 'default' : 'pointer',
+                      fontSize: '0.78rem', fontWeight: blocked ? 700 : 400,
+                      textDecoration: blocked ? 'line-through' : 'none',
+                      transition: 'all 0.12s',
+                      outline: blocked ? '1px solid #f8717155' : 'none'
+                    }}
+                  >
+                    {parseInt(date.slice(8))}
+                  </button>
+                )
+              })}
+            </div>
+
+            {(vacBarber.blockedDays || []).length > 0 && (
+              <p style={{ fontSize: '0.75rem', color: '#f87171', marginTop: '1rem' }}>
+                {vacBarber.blockedDays.length} día{vacBarber.blockedDays.length > 1 ? 's' : ''} bloqueado{vacBarber.blockedDays.length > 1 ? 's' : ''}
+              </p>
+            )}
+          </div>
         </div>
       )}
 

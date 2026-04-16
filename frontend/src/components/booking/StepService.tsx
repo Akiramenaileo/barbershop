@@ -27,13 +27,17 @@ export default function StepService({ selected, onSelect }: Props) {
               key={s._id}
               onClick={() => onSelect(s)}
               style={{
-                background: isSelected ? 'rgba(155,122,66,0.12)' : 'var(--bg-card)',
-                border: `1px solid ${isSelected ? 'var(--gold)' : 'var(--border)'}`,
+                background: isSelected ? 'rgba(212,170,80,0.15)' : 'var(--bg-card)',
+                border: `1px solid ${isSelected ? '#D4AA50' : 'var(--border)'}`,
+                borderRadius: 4,
                 padding: '1.5rem',
                 cursor: 'pointer', textAlign: 'left',
-                transition: 'background 0.15s', color: 'var(--text)',
-                position: 'relative'
+                transition: 'all 0.15s', color: 'var(--text)',
+                position: 'relative',
+                boxShadow: isSelected ? '0 0 0 1px #D4AA50' : 'none'
               }}
+              onMouseEnter={e => { if (!isSelected) { e.currentTarget.style.borderColor = 'var(--gold)'; e.currentTarget.style.background = 'rgba(155,122,66,0.07)' } }}
+              onMouseLeave={e => { if (!isSelected) { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.background = 'var(--bg-card)' } }}
             >
               {isSelected && (
                 <div style={{
@@ -47,10 +51,10 @@ export default function StepService({ selected, onSelect }: Props) {
               <div style={{ fontSize: '0.65rem', fontFamily: 'JetBrains Mono, monospace', color: 'var(--text-muted)', marginBottom: '0.5rem', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
                 {s.duration} min
               </div>
-              <div style={{ fontFamily: 'Fraunces, serif', fontStyle: 'italic', fontWeight: 600, fontSize: '1.05rem', marginBottom: '0.4rem' }}>{s.name}</div>
+              <div style={{ fontFamily: 'Fraunces, serif', fontStyle: 'italic', fontWeight: 600, fontSize: '1.05rem', marginBottom: '0.4rem', color: isSelected ? '#D4AA50' : 'var(--text)' }}>{s.name}</div>
               <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: 1.5, marginBottom: '1rem' }}>{s.description}</div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontFamily: 'Fraunces, serif', fontStyle: 'italic', fontWeight: 700, color: 'var(--gold)', fontSize: '1.1rem' }}>
+                <span style={{ fontFamily: 'Fraunces, serif', fontStyle: 'italic', fontWeight: 700, color: isSelected ? '#D4AA50' : 'var(--gold)', fontSize: isSelected ? '1.2rem' : '1.1rem' }}>
                   ${s.price.toLocaleString('es-AR')}
                 </span>
                 {s.depositAmount > 0 && (

@@ -1,8 +1,9 @@
 export interface Barber {
   _id: string
   name: string
-  photo: string
+  photo?: string
   bio: string
+  initials?: string
   active: boolean
   schedule: {
     monday: DaySchedule

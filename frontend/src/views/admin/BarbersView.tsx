@@ -133,7 +133,7 @@ export default function BarbersView() {
         breakEnd: b.schedule[d.key]?.breakEnd ?? ''
       }])
     ) as BarberForm['schedule']
-    setForm({ name: b.name, bio: b.bio, photo: b.photo, active: b.active, schedule: sched })
+    setForm({ name: b.name, bio: b.bio, photo: b.photo ?? '', active: b.active, schedule: sched })
     setShowForm(true)
   }
 
